@@ -5,8 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oi amor da minha vida 💖 Parabeeens! 🎉</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .heart {
+      position: fixed;
+      top: -10px;
+      color: pink;
+      font-size: 24px;
+      animation: fall 5s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body class="bg-pink-50 text-gray-800 font-sans">
+
+  <!-- CHUVA DE CORAÇÕES -->
+  <script>
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      heart.innerText = "💖";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    setInterval(createHeart, 300);
+  </script>
+
   <section class="text-center py-10 px-4">
     <h1 class="text-4xl font-bold text-pink-600">Oi amor da minha vida 💖 Parabeeens! 🎉 🎂</h1>
     <p class="mt-6 text-lg max-w-2xl mx-auto">
@@ -23,10 +60,13 @@
 
   <section class="text-center py-10">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Nossos Momentos 📸</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
-      <img src="https://drive.google.com/uc?export=view&id=1" class="rounded-2xl shadow-md" alt="Foto 1">
-      <img src="https://drive.google.com/uc?export=view&id=2" class="rounded-2xl shadow-md" alt="Foto 2">
-      <img src="https://drive.google.com/uc?export=view&id=3" class="rounded-2xl shadow-md" alt="Foto 3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4">
+      <img src="https://drive.google.com/uc?export=view&id=1eGYb3LRsT3fdpgdvYzSd4QJk4XkXDO4a" class="rounded-2xl shadow-md" alt="Foto 1">
+      <img src="https://drive.google.com/uc?export=view&id=1qRfsXjBnr-ZJpyUOWQ39fVlojGpFTPjC" class="rounded-2xl shadow-md" alt="Foto 2">
+      <img src="https://drive.google.com/uc?export=view&id=1BJcTjLvJ1I6pD7m3UGzRViqhCLYIbZN_" class="rounded-2xl shadow-md" alt="Foto 3">
+      <img src="https://drive.google.com/uc?export=view&id=1hog88cPLRIQ2WqONOXWM0EGAB6mgCcZY" class="rounded-2xl shadow-md" alt="Foto 4">
+      <img src="https://drive.google.com/uc?export=view&id=1wgzE2bxqEnztn2wfi0EMdkS23eWSWAhC" class="rounded-2xl shadow-md" alt="Foto 5">
+      <img src="https://drive.google.com/uc?export=view&id=1L8zBjx_Q5YRY146xd2Nz6k8mOjOnU3FW" class="rounded-2xl shadow-md" alt="Foto 6">
     </div>
   </section>
 
@@ -35,6 +75,14 @@
     <p class="mt-4 max-w-2xl mx-auto text-lg">
       Pensar em como o tempo voa assusta às vezes, mas é tão bom estar contigo e ver o quanto já vivemos juntos desde dezembro. Sair em busca da neve, chamadas de vídeo a distância, reencontros no aeroporto dignos de sessão da tarde, ir andando sem rumo de madrugada e parar num restaurante duvidoso… 🤌🏼 eu amo o brilho que você tem nos olhos pra fazer qualquer coisa, seja uma noite cozinhando juntos ou uma tatuagem surpresa kkk enfim, a vida é muito boa ao seu lado e sou feliz demais contigo. Obrigado pelas noites em claro, pelas risadas sinceras, pelos roles de skate, fogueiras, trilhas, mergulho mesmo que no mar GELADO kkk em resumo, o que quero dizer é: Te amo, @mitatualisboa ✨
     </p>
+  </section>
+
+  <section class="text-center py-10 bg-white px-4">
+    <h2 class="text-2xl font-semibold text-pink-500 mb-6">Uma Surpresinha: Joguinho da Cobrinha 🐍</h2>
+    <div class="flex justify-center">
+      <iframe src="https://playsnake.org/" width="400" height="400" frameborder="0" class="rounded-xl shadow-lg"></iframe>
+    </div>
+    <p class="mt-4 text-gray-600 text-sm">Dica: jogue pensando em mim 😄</p>
   </section>
 
   <footer class="text-center py-6 text-sm text-gray-500">
