@@ -19,8 +19,10 @@
     canvas {
       border: 2px solid #ff69b4;
       background-color: white;
-      max-width: 90vw;
-      max-height: 90vw;
+      width: 90vmin;
+      height: 90vmin;
+      max-width: 400px;
+      max-height: 400px;
     }
     .controls {
       display: grid;
@@ -45,24 +47,30 @@
   </style>
 </head>
 <body>
-  <canvas id="game" width="300" height="300"></canvas>
+  <canvas id="game"></canvas>
 
   <div class="controls">
     <div class="empty"></div>
-    <button ontouchstart="setDirection('up')">⬆️</button>
+    <button ontouchstart="setDirection('up')" onclick="setDirection('up')">⬆️</button>
     <div class="empty"></div>
-    <button ontouchstart="setDirection('left')">⬅️</button>
-    <button ontouchstart="setDirection('down')">⬇️</button>
-    <button ontouchstart="setDirection('right')">➡️</button>
+    <button ontouchstart="setDirection('left')" onclick="setDirection('left')">⬅️</button>
+    <button ontouchstart="setDirection('down')" onclick="setDirection('down')">⬇️</button>
+    <button ontouchstart="setDirection('right')" onclick="setDirection('right')">➡️</button>
   </div>
 
   <script>
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
+
     const grid = 15;
-    let snake = [{x: 150, y: 150}];
+    let realSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.9);
+    realSize = Math.min(realSize, 400);
+    canvas.width = realSize;
+    canvas.height = realSize;
+
+    let snake = [{x: grid * 10, y: grid * 10}];
     let direction = 'right';
-    let apple = {x: 75, y: 75};
+    let apple = {x: grid * 5, y: grid * 5};
 
     function setDirection(dir) {
       const opposites = {
@@ -76,12 +84,10 @@
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       for (const s of snake) {
         ctx.fillStyle = '#ff1493';
         ctx.fillRect(s.x, s.y, grid, grid);
       }
-
       ctx.fillStyle = '#228B22';
       ctx.fillRect(apple.x, apple.y, grid, grid);
     }
@@ -94,7 +100,6 @@
       if (direction === 'down') head.y += grid;
 
       if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) return reset();
-
       for (let s of snake) {
         if (head.x === s.x && head.y === s.y) return reset();
       }
@@ -112,9 +117,9 @@
     }
 
     function reset() {
-      snake = [{x: 150, y: 150}];
+      snake = [{x: grid * 10, y: grid * 10}];
       direction = 'right';
-      apple = {x: 75, y: 75};
+      apple = {x: grid * 5, y: grid * 5};
     }
 
     setInterval(update, 150);
