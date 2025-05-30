@@ -1,73 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Snake Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Cobrinha 🐍</title>
   <style>
-    canvas { background: #222; display: block; margin: 20px auto; border: 2px solid #fff; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff0f5;
+      font-family: sans-serif;
+      margin: 0;
+      height: 100vh;
+    }
+    canvas {
+      border: 2px solid #ff69b4;
+      background-color: white;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .controls button {
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      background-color: #ffb6c1;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
-<canvas id="game" width="400" height="400"></canvas>
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+  <canvas id="game" width="300" height="300"></canvas>
+  <div class="controls">
+    <button onclick="setDirection('up')">⬆️</button>
+    <div>
+      <button onclick="setDirection('left')">⬅️</button>
+      <button onclick="setDirection('down')">⬇️</button>
+      <button onclick="setDirection('right')">➡️</button>
+    </div>
+  </div>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const grid = 15;
+    let snake = [{x: 150, y: 150}];
+    let direction = 'right';
+    let apple = {x: 75, y: 75};
 
-const box = 20;
-let snake = [{ x: 9 * box, y: 10 * box }];
-let direction = "";
-let food = {
-  x: Math.floor(Math.random() * 19 + 1) * box,
-  y: Math.floor(Math.random() * 19 + 1) * box,
-};
+    function setDirection(dir) {
+      const opposites = {
+        'up': 'down',
+        'down': 'up',
+        'left': 'right',
+        'right': 'left'
+      };
+      if (dir !== opposites[direction]) direction = dir;
+    }
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-  if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-  if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-  if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
-});
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = i === 0 ? "lime" : "white";
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
-  }
+      for (const s of snake) {
+        ctx.fillStyle = '#ff1493';
+        ctx.fillRect(s.x, s.y, grid, grid);
+      }
 
-  ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
+      ctx.fillStyle = '#228B22';
+      ctx.fillRect(apple.x, apple.y, grid, grid);
+    }
 
-  let headX = snake[0].x;
-  let headY = snake[0].y;
+    function update() {
+      let head = {...snake[0]};
+      if (direction === 'right') head.x += grid;
+      if (direction === 'left') head.x -= grid;
+      if (direction === 'up') head.y -= grid;
+      if (direction === 'down') head.y += grid;
 
-  if (direction === "LEFT") headX -= box;
-  if (direction === "UP") headY -= box;
-  if (direction === "RIGHT") headX += box;
-  if (direction === "DOWN") headY += box;
+      // Fim de jogo se sair da tela
+      if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) return reset();
 
-  if (
-    headX < 0 || headX >= canvas.width ||
-    headY < 0 || headY >= canvas.height ||
-    snake.some((s, i) => i !== 0 && s.x === headX && s.y === headY)
-  ) {
-    clearInterval(game);
-    alert("Fim de jogo! ❤️");
-  }
+      // Fim de jogo se colidir com corpo
+      for (let s of snake) {
+        if (head.x === s.x && head.y === s.y) return reset();
+      }
 
-  if (headX === food.x && headY === food.y) {
-    food = {
-      x: Math.floor(Math.random() * 19 + 1) * box,
-      y: Math.floor(Math.random() * 19 + 1) * box,
-    };
-  } else {
-    snake.pop();
-  }
+      snake.unshift(head);
 
-  snake.unshift({ x: headX, y: headY });
-}
+      if (head.x === apple.x && head.y === apple.y) {
+        apple.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
+        apple.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
+      } else {
+        snake.pop();
+      }
 
-let game = setInterval(draw, 100);
-</script>
+      draw();
+    }
+
+    function reset() {
+      snake = [{x: 150, y: 150}];
+      direction = 'right';
+      apple = {x: 75, y: 75};
+    }
+
+    setInterval(update, 150);
+  </script>
 </body>
 </html>
