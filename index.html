@@ -55,10 +55,8 @@
 
 <section class="text-center py-10">
   <h2 class="text-2xl font-semibold text-pink-500 mb-6">Alguns momentos especiais 📸</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">
-    <img src="images/foto1.jpg" alt="Foto 1" class="rounded-2xl shadow-md">
-    <img src="images/foto2.jpg" alt="Foto 2" class="rounded-2xl shadow-md">
-    <img src="images/foto6.jpg" alt="Foto 6" class="rounded-2xl shadow-md">
+  <div class="relative w-full max-w-md mx-auto">
+    <img id="carousel-image" src="images/foto1.jpg" class="rounded-2xl shadow-md w-full h-auto transition-opacity duration-500">
   </div>
 </section>
 
@@ -67,6 +65,12 @@
     <p class="mt-4 max-w-2xl mx-auto text-lg">
     Mesmo distante a vida contigo é mágica, amo cada detalhe seu e o brilho no seu olhar, e esse sentimento só aumenta a cada dia que passa. Como o tempo voa, logo já são 6 meses desde que nos reencontramos, logo 4 meses de namoro, e mesmo assim parece que passei minha vida toda contigo. Parabéns meu amor! Espero que voce tenha comemorações incríveis, e se prepara porque seu aniversário só acaba quando voce comemorar comigo aqui no Brasil. Esse novo ciclo vai ser lindo, principalmente porque estaremos sempre juntos! Te amo!!!    </p>
   </section>
+
+  <section class="text-center py-10 px-4">
+  <button onclick="triggerLove()" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition-all">
+    Te amo 💕
+  </button>
+</section>
 
   <section class="text-center py-10 bg-white px-4">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Uma Surpresinha: Cobrinhaaaaaaaa 🐍</h2>
@@ -79,5 +83,44 @@
   <footer class="text-center py-6 text-sm text-gray-500">
     Feito com muito amor por Leonardo ❤️
   </footer>
+
+<script>
+  const images = [
+    "images/foto1.jpg",
+    "images/foto2.jpg",
+    "images/foto3.jpg",
+    "images/foto4.jpg",
+    "images/foto5.jpg",
+    "images/foto6.jpg"
+  ];
+  let index = 0;
+  const imgElement = document.getElementById("carousel-image");
+
+  setInterval(() => {
+    index = (index + 1) % images.length;
+    imgElement.style.opacity = 0;
+    setTimeout(() => {
+      imgElement.src = images[index];
+      imgElement.style.opacity = 1;
+    }, 300);
+  }, 3000); // troca a cada 3 segundos
+</script>
+
+<script>
+  function triggerLove() {
+    for (let i = 0; i < 100; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      heart.innerText = "💖";
+      heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+  }
+</script>
+
+  
 </body>
 </html>
