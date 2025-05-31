@@ -1,59 +1,65 @@
-# 💝 Aniversário da Minha Namorada - Um Presente Digital
+# 💝 Birthday Gift for My Girlfriend - A Digital Love Letter
 
-Um site especial criado com HTML, CSS e JavaScript para celebrar o aniversário da pessoa mais importante da minha vida. Inclui mensagens carinhosas, nossa playlist do Spotify, um jogo da cobrinha nostálgico, mapa interativo dos nossos lugares especiais e uma galeria de momentos especiais.
+**Read this in**: [Português Brasileiro](#-presente-de-aniversário-para-minha-namorada---uma-carta-de-amor-digital) ↓
 
-🔗 **Acesse o site:** [https://leonardoalm7.github.io/camila-te-amo/](https://leonardoalm7.github.io/camila-te-amo/)  
+A special website created with HTML, CSS and JavaScript to celebrate the birthday of the most important person in my life. Includes heartfelt messages, our Spotify playlist, an interactive map of our special places, and a memory timeline.
 
-## ✨ Recursos
-- **Design responsivo** (funciona em celulares e computadores)
-- **Chuva de corações** interativa (clique no botão para ativar)
-- **Playlist sentimental** integrada via Spotify (versão compacta)
-- **Jogo da cobrinha** personalizado (para lembrar nossos momentos divertidos)
-- **Mapa da nossa jornada** com todos os lugares especiais em Portugal
-- **Linha do tempo interativa** com nossas datas importantes
-- **Galeria automática** de fotos especiais
-- **Carta digital** com mensagem emocionada
-- **Modo noturno romântico** com efeitos especiais
+🔗 **Live Demo**: [https://leonardoalm7.github.io/camila-te-amo/](https://leonardoalm7.github.io/camila-te-amo/)  
 
-## 🛠 Tecnologias Usadas
-- HTML5 (semântico)
-- CSS3 (com animações e TailwindCSS para agilidade)
-- JavaScript (para interações especiais)
-- Leaflet.js (mapa interativo)
+## ✨ Features
+- **Fully responsive design** (mobile & desktop)
+- **Interactive elements**:
+  - Falling hearts animation
+  - Click-triggered love effects
+  - Day/Night mode toggle
+- **Spotify playlist** integration (compact player)
+- **Interactive memory map** of our journey through Portugal
+- **Custom snake game** (inside joke)
+- **Automated photo gallery**
+- **Digital love letter** with personal message
+
+## 🛠 Technologies Used
+- HTML5 (semantic)
+- CSS3 (animations + TailwindCSS)
+- JavaScript (interactive elements)
+- Leaflet.js (interactive map)
 - Spotify Embed API
 
-## 📌 Sobre o Projeto
-Este é um projeto pessoal que combina **minhas habilidades de desenvolvimento web** com um **gesto de carinho**. Foi criado para:
-- Demonstrar criatividade técnica de forma afetiva
-- Praticar conceitos de front-end de maneira significativa
-- Presentear alguém especial de forma inovadora
-- Criar uma cápsula do tempo digital do nosso relacionamento
-
-## 🌟 Novas Funcionalidades
-- **Mapa dos Nossos Lugares**: Visualização interativa de todos os locais especiais que visitamos em Portugal, com:
-  - Linha conectando os pontos na ordem cronológica
-  - Marcadores personalizados com emojis
-  - Popups com memórias de cada lugar
-  - Integração com modo noturno
-
-- **Experiência Noturna Aprimorada**:
-  - Fundo estrelado
-  - Textos com efeito neon suave
-  - Efeito de velas nos botões
-  - Chuva de estrelas
-
-## 🎁 Como Personalizar
-Se quiser usar como inspiração:
-1. Substitua as fotos em `/images` pelas suas
-2. Altere o texto no HTML
-3. Troque a playlist do Spotify (atualize o embed link)
-4. Modifique as cores no Tailwind (classes bg-pink-*)
-5. Atualize as coordenadas no mapa (use [LatLong.net](https://www.latlong.net/))
-6. Adicione novas datas na linha do tempo
-
-## 💌 Nota Pessoal
-> "Este projeto vai além do código - é uma cápsula do tempo digital do nosso amor. Cada linha foi escrita com carinho, assim como cada momento que compartilhamos. Desde nosso primeiro beijo no Porto até os planos futuros, tudo está registrado aqui com todo o meu amor. Te amo, Camila!"
+## 💞 Personal Note
+> "Every line of code here represents a moment of our love story. From our first kiss in Porto to all the adventures that followed, this is my digital love letter to you. I love you, Camila!"
 
 ---
 
-Feito com ❤️ por Leonardo Almeida | 2025
+# 💝 Presente de Aniversário para Minha Namorada - Uma Carta de Amor Digital
+
+**Leia em**: [English](#-birthday-gift-for-my-girlfriend---a-digital-love-letter) ↑
+
+Um site especial criado com HTML, CSS e JavaScript para celebrar o aniversário da pessoa mais importante da minha vida. Inclui mensagens carinhosas, nossa playlist do Spotify, um mapa interativo dos nossos lugares especiais e uma linha do tempo de memórias.
+
+🔗 **Acesse**: [https://leonardoalm7.github.io/camila-te-amo/](https://leonardoalm7.github.io/camila-te-amo/)  
+
+## ✨ Recursos
+- **Design responsivo** (mobile e desktop)
+- **Elementos interativos**:
+  - Chuva de corações
+  - Efeitos especiais ao clicar
+  - Modo dia/noite
+- **Playlist do Spotify** (versão compacta)
+- **Mapa interativo** da nossa jornada em Portugal
+- **Jogo da cobrinha** personalizado (piada interna)
+- **Galeria automática** de fotos
+- **Carta de amor digital** com mensagem pessoal
+
+## 🛠 Tecnologias Usadas
+- HTML5 (semântico)
+- CSS3 (animações + TailwindCSS)
+- JavaScript (elementos interativos)
+- Leaflet.js (mapa interativo)
+- API de Embed do Spotify
+
+## 💞 Nota Pessoal
+> "Cada linha de código aqui representa um momento da nossa história. Desde nosso primeiro beijo no Porto até todas as aventuras que vivemos, esta é minha carta de amor digital para você. Te amo, Camila!"
+
+---
+
+Made with ❤️ by Leonardo Almeida | 2025
