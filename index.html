@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oi amor da minha vida 💖 Parabeeens! 🎉</title>
+  <title>Parabéns meu amor! 💖 🎉</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .heart {
@@ -20,7 +20,7 @@
       100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Modo Noturno Aprimorado */
+    /* Modo Noturno */
     .night-mode {
       background: #0f172a url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=600&auto=format') fixed;
       color: #f8fafc !important;
@@ -44,7 +44,6 @@
       background-color: #9d174d !important;
     }
 
-    /* Ajustes específicos para elementos */
     .night-mode .bg-white {
       background-color: rgba(15, 23, 42, 0.9) !important;
       border: 1px solid rgba(255, 182, 193, 0.2);
@@ -131,18 +130,22 @@
     </p>
   </section>
 
-  <section class="text-center py-10 bg-white">
-    <h2 class="text-2xl font-semibold text-pink-500 mb-4">Nossa Playlist 💖</h2>
+  <!-- SEÇÃO DA PLAYLIST (VERSÃO COMPACTA) -->
+  <section class="text-center py-6 bg-white">
+    <h2 class="text-2xl font-semibold text-pink-500 mb-3">Nossa Trilha Sonora 💖</h2>
     <div class="flex justify-center">
-      <iframe class="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/02XY73OQNrlRoJQweUXReh?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe class="spotify-iframe" 
+              style="border-radius:8px" 
+              src="https://open.spotify.com/embed/playlist/02XY73OQNrlRoJQweUXReh?utm_source=generator&theme=0&controls=0&showuser=0&showcoverart=0" 
+              width="300" 
+              height="152" 
+              frameborder="0" 
+              allowtransparency="true"
+              class="shadow-lg">
+      </iframe>
     </div>
+    <p class="mt-2 text-sm text-gray-500">Ouça enquanto navega ❤️</p>
   </section>
-
-  <div class="text-center py-4">
-    <a href="timeline.html" class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg transform hover:scale-105">
-      📅 Nossa Linha do Tempo Especial 💞
-    </a>
-  </div>
   
   <section class="text-center py-10 bg-white px-4">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Uma surpresa: Cobrinhaaaaaaaa 🐍</h2>
@@ -172,6 +175,12 @@
     </button>
   </section>
 
+  <div class="text-center py-4">
+    <a href="timeline.html" class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg transform hover:scale-105">
+      📅 Nossa Linha do Tempo Especial 💞
+    </a>
+  </div>
+  
   <footer class="text-center py-6 text-sm text-gray-500">
     Feito com muito amor por Leonardo ❤️
   </footer>
@@ -220,7 +229,6 @@
       document.getElementById('modeIcon').textContent = isNightMode ? '☀️' : '🌙';
       document.getElementById('modeText').textContent = isNightMode ? 'Dia' : 'Noite';
       
-      // Chuva de estrelas no modo noturno
       if(isNightMode) {
         createStars();
       } else {
