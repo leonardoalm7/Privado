@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Parabéns meu amor! 💖 🎉</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     .heart {
       position: fixed;
@@ -99,6 +100,25 @@
       0%, 100% { opacity: 0.2; }
       50% { opacity: 1; }
     }
+
+    /* Estilos do Mapa */
+    #memoryMap {
+      z-index: 10;
+    }
+    .night-mode #memoryMap {
+      filter: hue-rotate(-10deg) brightness(0.7) contrast(1.2);
+    }
+    .map-pin {
+      filter: drop-shadow(0 0 4px rgba(0,0,0,0.3));
+    }
+    .leaflet-popup-content {
+      margin: 12px !important;
+    }
+    .leaflet-popup-content h3 {
+      font-weight: bold;
+      color: #ec4899;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body class="bg-pink-50 text-gray-800 font-sans">
@@ -146,6 +166,34 @@
     </div>
     <p class="mt-2 text-sm text-gray-500">Ouça enquanto navega ❤️</p>
   </section>
+
+  <!-- MAPA DOS LUGARES ESPECIAIS -->
+  <section class="text-center py-10 bg-white px-4">
+    <h2 class="text-2xl font-semibold text-pink-500 mb-6">Nossa Jornada em Portugal 🌍</h2>
+    
+    <div id="memoryMap" class="h-96 w-full max-w-2xl mx-auto rounded-xl shadow-lg border-2 border-pink-200"></div>
+    
+    <div class="mt-4 flex flex-wrap justify-center gap-4">
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+        <span class="text-sm">Marcos importantes</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+        <span class="text-sm">Aventuras juntos</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-purple-500 rounded-full mr-2"></div>
+        <span class="text-sm">Natureza e relax</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="text-center py-4">
+    <a href="timeline.html" class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg transform hover:scale-105">
+      📅 Nossa Linha do Tempo Especial 💞
+    </a>
+  </div>
   
   <section class="text-center py-10 bg-white px-4">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Uma surpresa: Cobrinhaaaaaaaa 🐍</h2>
@@ -175,16 +223,11 @@
     </button>
   </section>
 
-  <div class="text-center py-4">
-    <a href="timeline.html" class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg transform hover:scale-105">
-      📅 Nossa Linha do Tempo Especial 💞
-    </a>
-  </div>
-  
   <footer class="text-center py-6 text-sm text-gray-500">
     Feito com muito amor por Leonardo ❤️
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     // Carrossel de imagens
     const images = [
@@ -264,6 +307,177 @@
       
       document.body.appendChild(stars);
     }
+
+    // Mapa dos Lugares Especiais
+    document.addEventListener('DOMContentLoaded', function() {
+      const map = L.map('memoryMap').setView([39.3999, -8.2245], 7);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/{variant}/{z}/{x}/{y}{r}.png', {
+        variant: isNightMode ? 'dark_all' : 'light_all',
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      // Ícones personalizados
+      const heartIcon = L.divIcon({
+        html: '❤️',
+        className: 'map-pin',
+        iconSize: [30, 30]
+      });
+
+      const adventureIcon = L.divIcon({
+        html: '🌊',
+        className: 'map-pin',
+        iconSize: [30, 30]
+      });
+
+      const natureIcon = L.divIcon({
+        html: '⛰️',
+        className: 'map-pin',
+        iconSize: [30, 30]
+      });
+
+      // Lugares em ordem cronológica
+      const ourPlaces = [
+        { // 1. Porto
+          coords: [41.1579, -8.6291],
+          icon: heartIcon,
+          title: "Porto",
+          content: "Onde tudo começou! Nosso primeiro beijo no festival 💋",
+          date: "08/12/2024"
+        },
+        { // 2. Lisboa
+          coords: [38.7223, -9.1393],
+          icon: heartIcon,
+          title: "Lisboa",
+          content: "Primeira viagem juntos - nos perdemos na Alfama mas foi perfeito!",
+          date: "12/2024"
+        },
+        { // 3. Cascais
+          coords: [38.6979, -9.4215],
+          icon: adventureIcon,
+          title: "Cascais",
+          content: "Dia na praia da Rainha e sorvete na Boca do Inferno 🍦",
+          date: "01/2025"
+        },
+        { // 4. Setúbal
+          coords: [38.5243, -8.8926],
+          icon: natureIcon,
+          title: "Setúbal",
+          content: "Passeio de barco para ver golfinhos 🐬",
+          date: "01/2025"
+        },
+        { // 5. Torre (Serra da Estrela)
+          coords: [40.3215, -7.6136],
+          icon: natureIcon,
+          title: "Serra da Estrela",
+          content: "Nosso primeiro boneco de neve juntos ⛄",
+          date: "01/2025"
+        },
+        { // 6. Tábua
+          coords: [40.3617, -8.0284],
+          icon: heartIcon,
+          title: "Tábua",
+          content: "Fim de semana romântico na pousada histórica 🏰",
+          date: "02/2025"
+        },
+        { // 7. Parque Peneda Gerês
+          coords: [41.7258, -8.1619],
+          icon: natureIcon,
+          title: "Parque Peneda Gerês",
+          content: "Trilha até as cascatas secretas 🌿",
+          date: "02/2025"
+        },
+        { // 8. Caldelas de Lobios
+          coords: [41.9931, -8.0793],
+          icon: natureIcon,
+          title: "Caldas de Lobios",
+          content: "Relaxamento nas termas naturais ♨️",
+          date: "02/2025"
+        },
+        { // 9. Braga
+          coords: [41.5454, -8.4265],
+          icon: heartIcon,
+          title: "Braga",
+          content: "Visita ao Bom Jesus - sua expressão ao ver a escadaria 😍",
+          date: "02/2025"
+        },
+        { // 10. Figueira da Foz
+          coords: [40.1509, -8.8618],
+          icon: adventureIcon,
+          title: "Figueira da Foz",
+          content: "Dia de praia com onda gigante que nos molhou todos 🌊",
+          date: "05/2025"
+        },
+        { // 11. Albufeira
+          coords: [37.0892, -8.2479],
+          icon: adventureIcon,
+          title: "Albufeira",
+          content: "Pôr do sol na Praia dos Pescadores 🎣",
+          date: "05/2025"
+        },
+        { // 12. Peniche
+          coords: [39.3558, -9.3814],
+          icon: adventureIcon,
+          title: "Peniche",
+          content: "Comer o melhor marisco da nossa vida 🦞",
+          date: "05/2025"
+        },
+        { // 13. Berlengas
+          coords: [39.4150, -9.5093],
+          icon: natureIcon,
+          title: "Berlengas",
+          content: "Passeio de barco até a ilha deserta 🏝️",
+          date: "05/2025"
+        }
+      ];
+
+      // Linha conectando os pontos
+      const routeLine = L.polyline(
+        ourPlaces.map(place => place.coords),
+        {
+          color: '#ec4899',
+          weight: 3,
+          dashArray: '5, 5',
+          opacity: 0.7
+        }
+      ).addTo(map);
+
+      // Adiciona marcadores
+      ourPlaces.forEach((place, index) => {
+        const marker = L.marker(place.coords, { 
+          icon: place.icon,
+          riseOnHover: true
+        }).addTo(map);
+        
+        marker.bindPopup(`
+          <div class="max-w-xs">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-pink-600">#${index + 1}</span>
+              <h3 class="font-bold text-lg">${place.title}</h3>
+            </div>
+            <p class="text-gray-700 text-sm mt-1">${place.content}</p>
+            <p class="text-xs text-gray-500 mt-2">${place.date}</p>
+          </div>
+        `);
+      });
+
+      // Ajusta o mapa no modo noturno
+      nightModeBtn.addEventListener('click', function() {
+        routeLine.setStyle({
+          color: isNightMode ? '#ec4899' : '#f472b6'
+        });
+        
+        map.eachLayer(layer => {
+          if (layer._url && layer._url.includes('cartocdn.com')) {
+            map.removeLayer(layer);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/{variant}/{z}/{x}/{y}{r}.png', {
+              variant: isNightMode ? 'dark_all' : 'light_all',
+              attribution: '© OpenStreetMap'
+            }).addTo(map);
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
