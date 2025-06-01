@@ -6,9 +6,9 @@
   <title>Jogo da Cobrinha 🐍</title>
   <style>
     body, html {
-  overscroll-behavior: none;
-  touch-action: none;
-}
+      overscroll-behavior: none;
+      touch-action: none;
+    }
     body {
       display: flex;
       flex-direction: column;
@@ -19,6 +19,12 @@
       margin: 0;
       height: 100vh;
       overflow: hidden;
+    }
+    .game-container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
     }
     canvas {
       border: 2px solid #ff69b4;
@@ -48,23 +54,70 @@
       background: transparent;
       box-shadow: none;
     }
+    .score-board {
+      background-color: white;
+      border: 2px solid #ff69b4;
+      padding: 15px;
+      border-radius: 10px;
+      min-width: 150px;
+    }
+    .score-board h3 {
+      margin-top: 0;
+      color: #ff1493;
+      text-align: center;
+    }
+    .score-display {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .ranking {
+      margin-top: 15px;
+    }
+    .ranking h4 {
+      margin-bottom: 5px;
+      color: #ff1493;
+    }
+    .ranking ul {
+      padding-left: 20px;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
-  <canvas id="game"></canvas>
-
-  <div class="controls">
-    <div class="empty"></div>
-    <button ontouchstart="setDirection('up')" onclick="setDirection('up')">⬆️</button>
-    <div class="empty"></div>
-    <button ontouchstart="setDirection('left')" onclick="setDirection('left')">⬅️</button>
-    <button ontouchstart="setDirection('down')" onclick="setDirection('down')">⬇️</button>
-    <button ontouchstart="setDirection('right')" onclick="setDirection('right')">➡️</button>
+  <div class="game-container">
+    <div>
+      <canvas id="game"></canvas>
+      <div class="controls">
+        <div class="empty"></div>
+        <button ontouchstart="setDirection('up')" onclick="setDirection('up')">⬆️</button>
+        <div class="empty"></div>
+        <button ontouchstart="setDirection('left')" onclick="setDirection('left')">⬅️</button>
+        <button ontouchstart="setDirection('down')" onclick="setDirection('down')">⬇️</button>
+        <button ontouchstart="setDirection('right')" onclick="setDirection('right')">➡️</button>
+      </div>
+    </div>
+    
+    <div class="score-board">
+      <h3>Placar</h3>
+      <div class="score-display">
+        Pontuação atual: <span id="current-score">0</span>
+      </div>
+      <div class="ranking">
+        <h4>Ranking Histórico</h4>
+        <ul>
+          <li>Você: <span id="player-best">0</span></li>
+          <li>Camila: <span id="camila-best">0</span></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <script>
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
+    const currentScoreElement = document.getElementById('current-score');
+    const playerBestElement = document.getElementById('player-best');
+    const camilaBestElement = document.getElementById('camila-best');
 
     const grid = 15;
     let realSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.9);
@@ -75,6 +128,21 @@
     let snake = [{x: grid * 10, y: grid * 10}];
     let direction = 'right';
     let apple = {x: grid * 5, y: grid * 5};
+    let score = 0;
+    
+    // Carrega os melhores scores do localStorage
+    let playerBest = localStorage.getItem('snakePlayerBest') || 0;
+    let camilaBest = localStorage.getItem('snakeCamilaBest') || 0;
+    
+    // Atualiza o placar na tela
+    function updateScoreDisplay() {
+      currentScoreElement.textContent = score;
+      playerBestElement.textContent = playerBest;
+      camilaBestElement.textContent = camilaBest;
+    }
+    
+    // Inicializa o placar
+    updateScoreDisplay();
 
     function setDirection(dir) {
       const opposites = {
@@ -113,6 +181,8 @@
       if (head.x === apple.x && head.y === apple.y) {
         apple.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
         apple.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
+        score += 10;
+        currentScoreElement.textContent = score;
       } else {
         snake.pop();
       }
@@ -121,9 +191,26 @@
     }
 
     function reset() {
+      // Atualiza o melhor score se necessário
+      if (score > playerBest) {
+        playerBest = score;
+        localStorage.setItem('snakePlayerBest', playerBest);
+        playerBestElement.textContent = playerBest;
+      }
+      
+      // Para fins de demonstração, vamos simular alguns scores da Camila
+      // Em um jogo real, isso viria de um servidor ou seria inserido manualmente
+      if (Math.random() < 0.3 && score > camilaBest) {
+        camilaBest = score;
+        localStorage.setItem('snakeCamilaBest', camilaBest);
+        camilaBestElement.textContent = camilaBest;
+      }
+      
       snake = [{x: grid * 10, y: grid * 10}];
       direction = 'right';
       apple = {x: grid * 5, y: grid * 5};
+      score = 0;
+      currentScoreElement.textContent = score;
     }
 
     setInterval(update, 150);
