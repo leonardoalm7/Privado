@@ -52,6 +52,7 @@
       left: 50%;
       margin-left: -3px;
       border-radius: 10px;
+      z-index: 1; /* Linha fica atrás dos novos elementos */
     }
 
     .event {
@@ -59,6 +60,7 @@
       position: relative;
       width: 50%;
       box-sizing: border-box;
+      z-index: 2; /* Eventos acima da linha */
     }
 
     .event:nth-child(odd) {
@@ -77,7 +79,7 @@
       background-color: #ec4899;
       border-radius: 50%;
       top: 15px;
-      z-index: 1;
+      z-index: 3; /* Bolinha acima de tudo */
     }
 
     .event:nth-child(odd)::after {
@@ -136,7 +138,14 @@
       50% { opacity: 1; }
     }
 
-    /* NOVOS ESTILOS (APENAS ISSO FOI ADICIONADO) */
+    /* NOVOS ESTILOS */
+    .add-experience-container {
+      position: relative;
+      z-index: 4; /* Acima da linha da timeline */
+      margin-top: 40px;
+      text-align: center;
+    }
+
     .add-experience-form {
       display: none;
       background-color: rgba(30, 41, 59, 0.9);
@@ -145,6 +154,8 @@
       padding: 20px;
       margin: 20px auto;
       max-width: 500px;
+      position: relative;
+      z-index: 5;
     }
     
     .form-input {
@@ -164,6 +175,26 @@
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+      border: none;
+    }
+    
+    .submit-btn:hover {
+      background-color: #831843;
+    }
+
+    .cancel-btn {
+      background-color: #4b5563;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      margin-right: 10px;
+    }
+
+    .cancel-btn:hover {
+      background-color: #374151;
     }
     
     .add-btn {
@@ -172,7 +203,7 @@
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 24px;
@@ -180,10 +211,19 @@
       margin: 30px auto;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       transition: all 0.3s;
+      border: none;
+      z-index: 4;
+      position: relative;
     }
     
     .add-btn:hover {
       transform: scale(1.1);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -196,7 +236,7 @@
     </a>
   </div>
 
-  <!-- Linha do tempo ORIGINAL (MANTIDA INTACTA) -->
+  <!-- Linha do tempo -->
   <div class="timeline">
     <!-- Event 1 -->
     <div class="event" onclick="showHeartBurst()">
@@ -270,14 +310,19 @@
       </div>
     </div>
 
-    <!-- NOVO BOTÃO ADICIONADO (ÚNICA ALTERAÇÃO NO HTML) -->
-    <div class="add-btn" id="addBtn">+</div>
-    <div class="add-experience-form" id="experienceForm">
-      <h3 class="text-xl font-semibold mb-4">Adicionar Nova Experiência</h3>
-      <input type="date" id="experienceDate" class="form-input" placeholder="Data">
-      <input type="text" id="experienceTitle" class="form-input" placeholder="Título (ex: Nosso primeiro encontro)">
-      <textarea id="experienceDescription" class="form-input" rows="4" placeholder="Descrição detalhada"></textarea>
-      <button class="submit-btn" id="submitExperience">Adicionar à Timeline</button>
+    <!-- Container para adicionar novas experiências -->
+    <div class="add-experience-container">
+      <button class="add-btn" id="addBtn">+</button>
+      <div class="add-experience-form" id="experienceForm">
+        <h3 class="text-xl font-semibold mb-4">Adicionar Nova Experiência</h3>
+        <input type="date" id="experienceDate" class="form-input" placeholder="Data">
+        <input type="text" id="experienceTitle" class="form-input" placeholder="Título (ex: Nosso primeiro encontro)">
+        <textarea id="experienceDescription" class="form-input" rows="4" placeholder="Descrição detalhada"></textarea>
+        <div class="form-actions">
+          <button class="cancel-btn" id="cancelBtn">Cancelar</button>
+          <button class="submit-btn" id="submitExperience">Adicionar</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -288,7 +333,7 @@
   <div id="starsContainer" class="stars"></div>
 
   <script>
-    // Cria estrelas (FUNÇÃO ORIGINAL MANTIDA)
+    // Cria estrelas
     function createStars() {
       const container = document.getElementById('starsContainer');
       container.innerHTML = '';
@@ -306,7 +351,7 @@
       }
     }
 
-    // Efeito de corações (FUNÇÃO ORIGINAL MANTIDA)
+    // Efeito de corações
     function showHeartBurst() {
       const heartBurst = document.getElementById('heartBurst');
       heartBurst.innerHTML = '';
@@ -338,13 +383,8 @@
       }, 2000);
     }
 
-    // NOVAS FUNÇÕES ADICIONADAS (APENAS ISSO FOI ADICIONADO)
-    document.getElementById('addBtn').addEventListener('click', function() {
-      const form = document.getElementById('experienceForm');
-      form.style.display = form.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.getElementById('submitExperience').addEventListener('click', function() {
+    // Adicionar nova experiência
+    function addNewExperience() {
       const dateInput = document.getElementById('experienceDate');
       const titleInput = document.getElementById('experienceTitle');
       const descInput = document.getElementById('experienceDescription');
@@ -358,14 +398,15 @@
       const dateObj = new Date(dateInput.value);
       const formattedDate = dateObj.toLocaleDateString('pt-BR');
       
-      // Criar novo evento
+      // Criar novo elemento de evento
+      const timeline = document.querySelector('.timeline');
       const newEvent = document.createElement('div');
       newEvent.className = 'event';
       newEvent.onclick = showHeartBurst;
       
       // Alternar posição (esquerda/direita)
-      const events = document.querySelectorAll('.event');
-      if (events.length % 2 === 0) {
+      const totalEvents = document.querySelectorAll('.timeline .event').length;
+      if (totalEvents % 2 === 0) {
         newEvent.style.left = '0';
       } else {
         newEvent.style.left = '50%';
@@ -375,32 +416,54 @@
         <div class="content">
           <div class="date">${formattedDate}</div>
           <p>${titleInput.value}</p>
-          <p class="text-sm mt-2">${descInput.value || ''}</p>
+          <p class="text-sm mt-2">${descInput.value}</p>
         </div>
       `;
       
-      // Inserir antes do botão de adicionar
-      const timeline = document.querySelector('.timeline');
-      timeline.insertBefore(newEvent, document.getElementById('addBtn'));
+      // Inserir antes do container de adicionar
+      timeline.insertBefore(newEvent, document.querySelector('.add-experience-container'));
       
-      // Resetar formulário
+      // Limpar formulário
       dateInput.value = '';
       titleInput.value = '';
       descInput.value = '';
       document.getElementById('experienceForm').style.display = 'none';
       
-      // Efeito especial
+      // Efeito visual
       showHeartBurst();
-    });
+    }
 
-    // Inicialização ORIGINAL (MANTIDA) + novo evento
+    // Inicialização
     document.addEventListener('DOMContentLoaded', function() {
       createStars();
       
-      // Adiciona evento de clique a todos os eventos (ORIGINAL)
+      // Adiciona evento de clique a todos os eventos
       document.querySelectorAll('.event').forEach(event => {
         event.addEventListener('click', showHeartBurst);
       });
+
+      // Configurar botão de adicionar
+      document.getElementById('addBtn').addEventListener('click', function() {
+        const form = document.getElementById('experienceForm');
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        
+        // Focar no campo de data quando abrir
+        if (form.style.display === 'block') {
+          document.getElementById('experienceDate').focus();
+        }
+      });
+
+      // Configurar botão de cancelar
+      document.getElementById('cancelBtn').addEventListener('click', function() {
+        document.getElementById('experienceForm').style.display = 'none';
+        // Limpar campos
+        document.getElementById('experienceDate').value = '';
+        document.getElementById('experienceTitle').value = '';
+        document.getElementById('experienceDescription').value = '';
+      });
+
+      // Configurar botão de submit
+      document.getElementById('submitExperience').addEventListener('click', addNewExperience);
     });
   </script>
 </body>
