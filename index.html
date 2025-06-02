@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Parabéns meu amor! 💖 🎉</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -62,12 +62,6 @@
       filter: hue-rotate(-10deg) brightness(0.85) contrast(1.1);
     }
 
-    .night-mode #snake-container {
-      background-color: rgba(15, 23, 42, 0.9);
-      padding: 10px;
-      border-radius: 12px;
-    }
-
     /* Efeito de vela */
     .candle-effect::after {
       content: "";
@@ -104,6 +98,7 @@
     /* Estilos do Mapa */
     #memoryMap {
       z-index: 10;
+      height: 400px;
     }
     .night-mode #memoryMap {
       filter: hue-rotate(-10deg) brightness(0.7) contrast(1.2);
@@ -118,6 +113,39 @@
       font-weight: bold;
       color: #ec4899;
       margin-bottom: 4px;
+    }
+
+    /* Ajustes para o jogo no mobile */
+    #snake-game-container {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    #snake-game {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    #snake-game iframe {
+      border: 2px solid #ff69b4;
+      border-radius: 12px;
+      background: white;
+    }
+
+    @media (max-width: 768px) {
+      #memoryMap {
+        height: 350px;
+      }
+      
+      #snake-game iframe {
+        height: 350px !important;
+        width: 100% !important;
+        max-width: 350px !important;
+      }
     }
   </style>
 </head>
@@ -150,7 +178,7 @@
     </p>
   </section>
 
-  <!-- SEÇÃO DA PLAYLIST (VERSÃO COMPACTA) -->
+  <!-- SEÇÃO DA PLAYLIST -->
   <section class="text-center py-6 bg-white">
     <h2 class="text-2xl font-semibold text-pink-500 mb-3">Nossa Trilha Sonora 💖</h2>
     <div class="flex justify-center">
@@ -171,7 +199,7 @@
   <section class="text-center py-10 bg-white px-4">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Nossa Jornada em Portugal 🌍</h2>
     
-    <div id="memoryMap" class="h-96 w-full max-w-2xl mx-auto rounded-xl shadow-lg border-2 border-pink-200"></div>
+    <div id="memoryMap" class="w-full max-w-2xl mx-auto rounded-xl shadow-lg border-2 border-pink-200"></div>
     
     <div class="mt-4 flex flex-wrap justify-center gap-4">
       <div class="flex items-center">
@@ -195,14 +223,16 @@
     </a>
   </div>
   
+  <!-- SEÇÃO DO JOGO DA COBRINHA (ATUALIZADA) -->
   <section class="text-center py-10 bg-white px-4">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Uma surpresa: Cobrinhaaaaaaaa 🐍</h2>
-    <div id="snake-container" class="flex justify-center">
-      <iframe src="snake.html" width="100%" height="600" frameborder="0" class="rounded-xl shadow-lg" style="max-width: 800px;"></iframe>
+    <div id="snake-game-container">
+      <div id="snake-game"></div>
+      <p class="mt-4 text-gray-600 text-sm">Pra voce lembrar da gente jogando juntos hahaha 😄</p>
     </div>
-    <p class="mt-4 text-gray-600 text-sm">Pra voce lembrar da gente jogando juntos hahaha 😄</p>
   </section>
   
+  <!-- CARROSSEL DE FOTOS -->
   <section class="text-center py-10">
     <h2 class="text-2xl font-semibold text-pink-500 mb-6">Alguns momentos especiais 📸</h2>
     <div class="relative w-full max-w-md mx-auto">
@@ -210,6 +240,7 @@
     </div>
   </section>
 
+  <!-- CARTA DE AMOR -->
   <section class="text-center py-10 bg-pink-100 px-4">
     <h2 class="text-2xl font-semibold text-pink-700">Minha Carta pra Você 💌</h2>
     <p class="mt-4 max-w-2xl mx-auto text-lg">
@@ -217,6 +248,7 @@
     </p>
   </section>
 
+  <!-- BOTÃO ESPECIAL -->
   <section class="text-center py-10 px-4">
     <button onclick="triggerLove()" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full text-lg font-semibold transition-all candle-effect">
       Clique aqui 💕
@@ -312,8 +344,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const map = L.map('memoryMap').setView([39.3999, -8.2245], 7);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/{variant}/{z}/{x}/{y}{r}.png', {
-        variant: isNightMode ? 'dark_all' : 'light_all',
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap'
       }).addTo(map);
 
@@ -478,6 +509,36 @@
         });
       });
     });
+
+    // Carrega o jogo da cobrinha dinamicamente (otimizado para mobile)
+    function loadSnakeGame() {
+      const container = document.getElementById('snake-game');
+      
+      // Cria um iframe responsivo
+      const iframe = document.createElement('iframe');
+      iframe.src = 'snake.html';
+      iframe.style.width = '100%';
+      iframe.style.height = '400px';
+      iframe.style.maxWidth = '400px';
+      iframe.style.border = 'none';
+      iframe.style.borderRadius = '12px';
+      iframe.style.overflow = 'hidden';
+      
+      // Ajustes específicos para iOS
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allow', 'fullscreen');
+      
+      container.appendChild(iframe);
+      
+      // Ajusta a altura após o carregamento
+      iframe.onload = function() {
+        iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+      };
+    }
+
+    // Carrega o jogo quando a página estiver pronta
+    document.addEventListener('DOMContentLoaded', loadSnakeGame);
   </script>
 </body>
 </html>
