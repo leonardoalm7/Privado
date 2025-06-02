@@ -1,99 +1,239 @@
-<style>
-  body, html {
-    overscroll-behavior: none;
-    touch-action: none;
-  }
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Alterado para flex-start */
-    background-color: #fff0f5;
-    font-family: sans-serif;
-    margin: 0;
-    min-height: 100vh;
-    overflow: auto; /* Alterado para auto */
-    padding: 20px 0; /* Adicionado padding */
-  }
-  .game-container {
-    display: flex;
-    flex-direction: column; /* Alterado para coluna (será sobrescrito no desktop) */
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-  }
-  canvas {
-    border: 2px solid #ff69b4;
-    background-color: white;
-    width: 85vmin;
-    height: 85vmin;
-    max-width: 350px; /* Reduzido para mobile */
-    max-height: 350px;
-  }
-  .controls {
-    display: grid;
-    grid-template-columns: 60px 60px 60px;
-    grid-template-rows: 60px 60px;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  .controls button {
-    font-size: 24px;
-    background-color: #ffb6c1;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    width: 60px;
-    height: 60px;
-  }
-  .empty {
-    background: transparent;
-    box-shadow: none;
-  }
-  .score-board {
-    background-color: white;
-    border: 2px solid #ff69b4;
-    padding: 15px;
-    border-radius: 10px;
-    width: 85vmin;
-    max-width: 350px; /* Igual ao canvas */
-    box-sizing: border-box;
-  }
-  .score-board h3 {
-    margin-top: 0;
-    color: #ff1493;
-    text-align: center;
-  }
-  .score-display {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  .ranking {
-    margin-top: 15px;
-  }
-  .ranking h4 {
-    margin-bottom: 5px;
-    color: #ff1493;
-  }
-  .ranking ul {
-    padding-left: 20px;
-    margin-top: 5px;
-  }
-
-  /* Media query para desktop */
-  @media (min-width: 768px) {
-    .game-container {
-      flex-direction: row; /* Volta a ser linha em telas maiores */
-      align-items: flex-start;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jogo da Cobrinha</title>
+  <style>
+    body, html {
+      overscroll-behavior: none;
+      touch-action: none;
+      margin: 0;
+      padding: 0;
+      background-color: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
+      height: 100%;
+      overflow: hidden;
     }
+    
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    
     canvas {
-      max-width: 400px;
-      max-height: 400px;
+      border: 2px solid #ff69b4;
+      background-color: white;
+      width: 90vmin;
+      height: 90vmin;
+      max-width: 350px;
+      max-height: 350px;
     }
+    
+    .controls {
+      display: grid;
+      grid-template-columns: 60px 60px 60px;
+      grid-template-rows: 60px 60px;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .controls button {
+      font-size: 24px;
+      background-color: #ffb6c1;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 60px;
+      height: 60px;
+    }
+    
+    .empty {
+      background: transparent;
+      box-shadow: none;
+    }
+    
     .score-board {
-      max-width: none;
-      min-width: 150px;
+      background-color: white;
+      border: 2px solid #ff69b4;
+      padding: 15px;
+      border-radius: 10px;
+      width: 90vmin;
+      max-width: 350px;
+      box-sizing: border-box;
     }
-  }
-</style>
+    
+    .score-board h3 {
+      margin-top: 0;
+      color: #ff1493;
+      text-align: center;
+    }
+    
+    .score-display {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .ranking {
+      margin-top: 15px;
+    }
+    
+    .ranking h4 {
+      margin-bottom: 5px;
+      color: #ff1493;
+    }
+    
+    .ranking ul {
+      padding-left: 20px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <canvas id="game"></canvas>
+    <div class="controls">
+      <div class="empty"></div>
+      <button ontouchstart="setDirection('up')" onclick="setDirection('up')">⬆️</button>
+      <div class="empty"></div>
+      <button ontouchstart="setDirection('left')" onclick="setDirection('left')">⬅️</button>
+      <button ontouchstart="setDirection('down')" onclick="setDirection('down')">⬇️</button>
+      <button ontouchstart="setDirection('right')" onclick="setDirection('right')">➡️</button>
+    </div>
+    
+    <div class="score-board">
+      <h3>Placar</h3>
+      <div class="score-display">
+        Pontuação atual: <span id="current-score">0</span>
+      </div>
+      <div class="ranking">
+        <h4>Ranking Histórico</h4>
+        <ul>
+          <li>Você: <span id="player-best">0</span></li>
+          <li>Camila: <span id="camila-best">0</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const currentScoreElement = document.getElementById('current-score');
+    const playerBestElement = document.getElementById('player-best');
+    const camilaBestElement = document.getElementById('camila-best');
+
+    const grid = 15;
+    let realSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.9);
+    realSize = Math.min(realSize, 350); // Ajustado para mobile
+    canvas.width = realSize;
+    canvas.height = realSize;
+
+    let snake = [{x: grid * 10, y: grid * 10}];
+    let direction = 'right';
+    let apple = {x: grid * 5, y: grid * 5};
+    let score = 0;
+    
+    // Carrega os melhores scores do localStorage
+    let playerBest = localStorage.getItem('snakePlayerBest') || 0;
+    let camilaBest = localStorage.getItem('snakeCamilaBest') || 0;
+    
+    // Atualiza o placar na tela
+    function updateScoreDisplay() {
+      currentScoreElement.textContent = score;
+      playerBestElement.textContent = playerBest;
+      camilaBestElement.textContent = camilaBest;
+    }
+    
+    // Inicializa o placar
+    updateScoreDisplay();
+
+    function setDirection(dir) {
+      const opposites = {
+        'up': 'down',
+        'down': 'up',
+        'left': 'right',
+        'right': 'left'
+      };
+      if (dir !== opposites[direction]) direction = dir;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of snake) {
+        ctx.fillStyle = '#ff1493';
+        ctx.fillRect(s.x, s.y, grid, grid);
+      }
+      ctx.fillStyle = '#228B22';
+      ctx.fillRect(apple.x, apple.y, grid, grid);
+    }
+
+    function update() {
+      let head = {...snake[0]};
+      if (direction === 'right') head.x += grid;
+      if (direction === 'left') head.x -= grid;
+      if (direction === 'up') head.y -= grid;
+      if (direction === 'down') head.y += grid;
+
+      if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) return reset();
+      for (let s of snake) {
+        if (head.x === s.x && head.y === s.y) return reset();
+      }
+
+      snake.unshift(head);
+
+      if (head.x === apple.x && head.y === apple.y) {
+        apple.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
+        apple.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
+        score += 10;
+        currentScoreElement.textContent = score;
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function reset() {
+      // Atualiza o melhor score se necessário
+      if (score > playerBest) {
+        playerBest = score;
+        localStorage.setItem('snakePlayerBest', playerBest);
+        playerBestElement.textContent = playerBest;
+      }
+      
+      // Para fins de demonstração, vamos simular alguns scores da Camila
+      if (Math.random() < 0.3 && score > camilaBest) {
+        camilaBest = score;
+        localStorage.setItem('snakeCamilaBest', camilaBest);
+        camilaBestElement.textContent = camilaBest;
+      }
+      
+      snake = [{x: grid * 10, y: grid * 10}];
+      direction = 'right';
+      apple = {x: grid * 5, y: grid * 5};
+      score = 0;
+      currentScoreElement.textContent = score;
+    }
+
+    // Ajusta o tamanho do canvas quando a janela for redimensionada
+    window.addEventListener('resize', () => {
+      realSize = Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.9);
+      realSize = Math.min(realSize, 350);
+      canvas.width = realSize;
+      canvas.height = realSize;
+      draw();
+    });
+
+    setInterval(update, 150);
+  </script>
+</body>
+</html>
